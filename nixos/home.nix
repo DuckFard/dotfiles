@@ -1,4 +1,4 @@
-{ pkgs, userName ? "nixos-user", userEmail ? "you@example.com", ... }:
+{ pkgs, userName ? "nixos-user", userEmail ? "replace-me", ... }:
 
 let
   cursorTheme = "ZUTOMAYO-Pixel-2x";

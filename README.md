@@ -14,7 +14,10 @@ and cursor assets referenced by the Nix config.
 - `config/waybar/` - active Waybar theme, modules, and helper scripts.
 - `nixos/home.nix` - user packages, Git identity, zsh setup, shell aliases, and cursor config.
 - `config/gtk-*`, `config/fontconfig/`, `config/xsettingsd/`, `config/xdg-desktop-portal-wlr/` - desktop integration config.
-- `driftwm/` - notes about the local driftwm build used by this setup.
+- `docs/` - restore, privacy, and repository map notes.
+- `scripts/` - local maintenance helpers.
+
+More detail is in `docs/repo-map.md`.
 
 ## Driftwm Source
 
@@ -50,9 +53,28 @@ The default public placeholders are configured in `nixos/flake.nix`:
 
 ```nix
 userName = "nixos-user";
-userEmail = "you@example.com";
+userEmail = "replace-me";
 hostName = "nixos";
 ```
+
+## Maintenance
+
+Run the standard checks before pushing:
+
+```sh
+./scripts/check
+```
+
+Useful helpers:
+
+```sh
+./scripts/tree                # show tracked files in a compact tree-like view
+./scripts/check-private-info  # scan tracked files for private-info patterns
+nix flake check --no-build ./nixos
+```
+
+The restore point from before the repository cleanup is documented in
+`docs/restore.md`.
 
 ## NSO Widgets
 

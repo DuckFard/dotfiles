@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+set -eu
+
+git ls-files | awk -F/ '
+{
+    path = ""
+    for (i = 1; i < NF; i++) {
+        path = path $i "/"
+        if (!(path in seen)) {
+            for (j = 1; j < i; j++) {
+                printf "  "
+            }
+            print $i "/"
+            seen[path] = 1
+        }
+    }
+
+    for (j = 1; j < NF; j++) {
+        printf "  "
+    }
+    print $NF
+}'

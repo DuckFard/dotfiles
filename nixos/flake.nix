@@ -16,7 +16,7 @@
     let
       system = "x86_64-linux";
       userName = "nixos-user";
-      userEmail = "you@example.com";
+      userEmail = "replace-me";
       hostName = "nixos";
       driftwmPackage = driftwm.packages.${system}.default;
     in {

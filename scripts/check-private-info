@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+set -eu
+
+patterns='(/home/[A-Za-z0-9._-]+|path:/home|userEmail[[:space:]]*=[[:space:]]*["'\''][^"'\'']+@[^"'\'']+|by-uuid/[0-9a-fA-F-]{8,}|github_pat_[A-Za-z0-9_]+|ghp_[A-Za-z0-9_]+|sk-proj-[A-Za-z0-9_-]+|BEGIN (RSA|OPENSSH|PRIVATE)|psk[[:space:]]*=|cookie[[:space:]]*=|password[[:space:]]*=[[:space:]]*["'\''][^"'\'']+|passwd[[:space:]]*=[[:space:]]*["'\''][^"'\'']+|ApiKey[[:space:]]*=[[:space:]]*["'\''][^"'\'']{12,})'
+
+if [ "$#" -gt 0 ]; then
+    target=$1
+    matches=$(git grep -n -E "$patterns" "$target" -- . ':!scripts/check-private-info' || true)
+else
+    target="tracked working tree"
+    matches=$(git grep -n -E "$patterns" -- . ':!scripts/check-private-info' || true)
+fi
+
+if [ -n "$matches" ]; then
+    printf '%s\n' "$matches"
+    printf '\nPotential private information found. Review the matches above.\n' >&2
+    exit 1
+fi
+
+printf 'No private-info patterns found in %s.\n' "$target"

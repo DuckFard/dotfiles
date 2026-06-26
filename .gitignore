@@ -33,6 +33,7 @@ config/systemd/user/*.wants/
 config/environment.d/10-home-manager.conf
 config/fontconfig/conf.d/10-hm-fonts.conf
 config/fontconfig/conf.d/52-hm-default-fonts.conf
+config/waybar/config
 
 # Build outputs
 result
