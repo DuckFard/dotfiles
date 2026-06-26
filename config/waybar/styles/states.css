@@ -1,0 +1,55 @@
+#custom-user:hover,
+#custom-nixos:hover,
+#custom-nix-config:hover,
+#custom-kernel:hover,
+#custom-disk:hover,
+#custom-driftwm:hover,
+#custom-jine:hover,
+#custom-social:hover,
+#custom-notes:hover,
+#custom-meds:hover,
+#custom-trash:hover,
+#idle_inhibitor:hover,
+#clock.date:hover,
+#network:hover,
+#bluetooth:hover,
+#custom-update:hover,
+#mpris:hover,
+#pulseaudio:hover,
+#wireplumber:hover {
+	color: @hover-fg;
+}
+
+/* Inactive states */
+#idle_inhibitor.deactivated,
+#mpris.paused,
+#pulseaudio.output.muted,
+#pulseaudio.input.source-muted,
+#wireplumber.muted {
+	color: @hover-fg;
+}
+
+#memory.warning,
+#cpu.warning,
+#custom-disk.warning,
+#custom-social.warning,
+#custom-trash.warning,
+#battery.warning {
+	color: @warning;
+}
+
+#temperature.critical,
+#memory.critical,
+#cpu.critical,
+#custom-disk.critical,
+#battery.critical {
+	color: @critical;
+}
+
+#battery.charging {
+	color: @charging;
+}
+
+#custom-meds.charging {
+	color: @charging;
+}

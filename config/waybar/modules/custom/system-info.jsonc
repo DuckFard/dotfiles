@@ -1,0 +1,46 @@
+{
+	"custom/nixos": {
+		"exec": "~/.config/waybar/scripts/system-info nixos",
+		"return-type": "json",
+		"interval": 3600,
+		"format": "{}",
+		"min-length": 11,
+		"max-length": 12
+	},
+
+	"custom/nix-config": {
+		"exec": "~/.config/waybar/scripts/system-info nix-config",
+		"return-type": "json",
+		"interval": 30,
+		"format": "{}",
+		"min-length": 3,
+		"max-length": 5
+	},
+
+	"custom/kernel": {
+		"exec": "~/.config/waybar/scripts/system-info kernel",
+		"return-type": "json",
+		"interval": 3600,
+		"format": "{}",
+		"min-length": 8,
+		"max-length": 8
+	},
+
+	"custom/disk": {
+		"exec": "~/.config/waybar/scripts/system-info disk",
+		"return-type": "json",
+		"interval": 60,
+		"format": "{}",
+		"min-length": 6,
+		"max-length": 6
+	},
+
+	"custom/driftwm": {
+		"exec": "~/.config/waybar/scripts/system-info driftwm",
+		"return-type": "json",
+		"interval": 5,
+		"format": "{}",
+		"min-length": 4,
+		"max-length": 4
+	}
+}

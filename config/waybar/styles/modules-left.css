@@ -1,0 +1,80 @@
+/*----------------
+    Workspaces
+----------------*/
+
+#custom-right_div.1 {
+	color: @workspaces;
+}
+
+#custom-ame {
+	padding: 0 10px 0 12px;
+	background-color: @ame;
+	color: @main-fg;
+}
+#custom-ame.streaming {
+	color: @cyber-cyan;
+}
+#custom-ame.warning {
+	color: @warning;
+}
+#custom-ame.critical {
+	color: @critical;
+}
+#custom-left_div.1 {
+	background-color: @ame;
+	color: @workspaces;
+}
+
+#workspaces {
+	padding: 0 1px;
+	background-color: @workspaces;
+}
+#workspaces button.active label,
+#workspaces button.focused label {
+	color: @accent;
+}
+
+#custom-nixos,
+#custom-nix-config,
+#custom-kernel,
+#custom-driftwm,
+#custom-jine,
+#custom-social,
+#custom-notes,
+#custom-meds,
+#custom-trash {
+	padding: 0 7px;
+	background-color: @workspaces;
+}
+
+#custom-jine {
+	color: @cyber-cyan;
+}
+#custom-social {
+	color: @sugar-dim;
+}
+#custom-notes {
+	color: @lemon;
+}
+#custom-meds {
+	color: @bubblegum;
+}
+#custom-trash {
+	color: @mint;
+}
+
+#custom-nix-config.warning {
+	color: @warning;
+}
+
+#custom-nix-config.clean {
+	color: @charging;
+}
+
+/*------------------
+    Window title
+------------------*/
+
+#window {
+	margin: 0 12px;
+}

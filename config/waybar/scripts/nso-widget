@@ -1,0 +1,169 @@
+#!/usr/bin/env bash
+set -u
+
+data_dir="${XDG_DATA_HOME:-$HOME/.local/share}/waybar-nso"
+state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/waybar-nso"
+cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/waybar-nso"
+
+mkdir -p "$data_dir" "$state_dir" "$cache_dir"
+
+json() {
+	local text="${1:-}"
+	local tooltip="${2:-}"
+	local class="${3:-normal}"
+
+	jq -cn --arg text "$text" --arg tooltip "$tooltip" --arg class "$class" \
+		'{text: $text, tooltip: $tooltip, class: $class}'
+}
+
+notify() {
+	if command -v notify-send >/dev/null 2>&1; then
+		notify-send "$1" "$2" -h string:x-canonical-private-synchronous:waybar-nso >/dev/null 2>&1 || true
+	fi
+}
+
+uptime_seconds() {
+	awk '{ printf "%d", $1 }' /proc/uptime
+}
+
+jine_messages() {
+	cat <<'MESSAGES'
+did you drink water yet?
+stream prep is taking forever...
+send a sticker if you are alive
+today feels kind of electric
+new notification. probably destiny
+keyboard sounds are good actually
+MESSAGES
+}
+
+case "${1:-}" in
+	jine)
+		mapfile -t messages < <(jine_messages)
+		count="${#messages[@]}"
+		now="$(date +%s)"
+		slot=$(((now / 120) % count))
+		reply_file="$state_dir/jine-replies"
+		replies=0
+		[ -f "$reply_file" ] && replies="$(wc -l < "$reply_file" | tr -d ' ')"
+		message="${messages[$slot]}"
+		tooltip="JINE
+Ame: $message
+Sticker replies today: $replies
+Click to send a sticker."
+		json "JINE ${replies}" "$tooltip" "jine"
+		;;
+	jine-reply)
+		reply_file="$state_dir/jine-replies"
+		today="$(date +%F)"
+		if [ -f "$reply_file.date" ] && [ "$(cat "$reply_file.date")" != "$today" ]; then
+			: > "$reply_file"
+		fi
+		printf '%s\n' "$(date --iso-8601=seconds)" >> "$reply_file"
+		printf '%s\n' "$today" > "$reply_file.date"
+		notify "JINE" "Sticker sent."
+		;;
+	social)
+		up="$(uptime_seconds)"
+		hours=$((up / 3600))
+		minutes=$(((up % 3600) / 60))
+		likes=$((420 + (up / 23) % 9999))
+		retweets=$((69 + (up / 97) % 2400))
+		class="social"
+		[ "$hours" -ge 8 ] && class="warning"
+		tooltip="Social Media
+Screen time: ${hours}h ${minutes}m
+Likes: $likes
+Retweets: $retweets
+Numbers scale with current session uptime."
+		json "SNS ${likes}" "$tooltip" "$class"
+		;;
+	notes)
+		notes_file="$data_dir/quick-notes.txt"
+		if [ ! -f "$notes_file" ]; then
+			printf '%s\n' \
+				'stream idea:' \
+				'check system updates' \
+				'water break' > "$notes_file"
+		fi
+		count="$(grep -cve '^[[:space:]]*$' "$notes_file" 2>/dev/null || printf '0')"
+		preview="$(grep -ve '^[[:space:]]*$' "$notes_file" 2>/dev/null | sed -n '1,5p')"
+		[ -n "$preview" ] || preview="No notes yet."
+		tooltip="Quick Notes
+$preview
+Click to edit."
+		json "NOTE ${count}" "$tooltip" "notes"
+		;;
+	notes-open)
+		notes_file="$data_dir/quick-notes.txt"
+		[ -f "$notes_file" ] || : > "$notes_file"
+		if command -v kate >/dev/null 2>&1; then
+			kate "$notes_file" >/dev/null 2>&1 &
+		elif command -v kitty >/dev/null 2>&1; then
+			kitty -e "${EDITOR:-vi}" "$notes_file" >/dev/null 2>&1 &
+		else
+			notify "Quick Notes" "$notes_file"
+		fi
+		;;
+	meds)
+		today="$(date +%F)"
+		state="$state_dir/meds"
+		state_date=""
+		count=0
+		if [ -f "$state" ]; then
+			read -r state_date count < "$state" || true
+		fi
+		if [ "$state_date" != "$today" ]; then
+			count=0
+		fi
+		class="meds"
+		[ "$count" -ge 3 ] && class="charging"
+		tooltip="Medications
+Fidget count today: $count/3
+Click to advance the counter."
+		json "MED ${count}/3" "$tooltip" "$class"
+		;;
+	meds-take)
+		today="$(date +%F)"
+		state="$state_dir/meds"
+		state_date=""
+		count=0
+		if [ -f "$state" ]; then
+			read -r state_date count < "$state" || true
+		fi
+		if [ "$state_date" != "$today" ]; then
+			count=0
+		fi
+		count=$(((count + 1) % 4))
+		printf '%s %s\n' "$today" "$count" > "$state"
+		notify "Medications" "Counter: $count/3"
+		;;
+	trash)
+		trash_dir="${XDG_DATA_HOME:-$HOME/.local/share}/Trash/files"
+		count=0
+		size="0B"
+		if [ -d "$trash_dir" ]; then
+			count="$(find "$trash_dir" -mindepth 1 -maxdepth 1 2>/dev/null | wc -l | tr -d ' ')"
+			size="$(du -sh "$trash_dir" 2>/dev/null | awk '{ print $1 }')"
+		fi
+		class="trash"
+		[ "$count" -gt 0 ] && class="warning"
+		tooltip="Trash Bin
+Items: $count
+Size: $size
+Click to open Trash."
+		json "TRASH ${count}" "$tooltip" "$class"
+		;;
+	trash-open)
+		if command -v dolphin >/dev/null 2>&1; then
+			dolphin trash:/ >/dev/null 2>&1 &
+		elif command -v xdg-open >/dev/null 2>&1; then
+			xdg-open trash:/ >/dev/null 2>&1 &
+		else
+			notify "Trash Bin" "${XDG_DATA_HOME:-$HOME/.local/share}/Trash/files"
+		fi
+		;;
+	*)
+		json "NSO ?" "Unknown NSO widget: ${1:-none}" "warning"
+		;;
+esac

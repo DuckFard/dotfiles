@@ -1,0 +1,53 @@
+{
+	"custom/jine": {
+		"exec": "~/.config/waybar/scripts/nso-widget jine",
+		"return-type": "json",
+		"interval": 30,
+		"format": "{}",
+		"min-length": 6,
+		"max-length": 8,
+		"on-click": "~/.config/waybar/scripts/nso-widget jine-reply",
+		"exec-on-event": true
+	},
+
+	"custom/social": {
+		"exec": "~/.config/waybar/scripts/nso-widget social",
+		"return-type": "json",
+		"interval": 30,
+		"format": "{}",
+		"min-length": 8,
+		"max-length": 10
+	},
+
+	"custom/notes": {
+		"exec": "~/.config/waybar/scripts/nso-widget notes",
+		"return-type": "json",
+		"interval": 15,
+		"format": "{}",
+		"min-length": 7,
+		"max-length": 8,
+		"on-click": "~/.config/waybar/scripts/nso-widget notes-open",
+		"exec-on-event": true
+	},
+
+	"custom/meds": {
+		"exec": "~/.config/waybar/scripts/nso-widget meds",
+		"return-type": "json",
+		"interval": 30,
+		"format": "{}",
+		"min-length": 7,
+		"max-length": 7,
+		"on-click": "~/.config/waybar/scripts/nso-widget meds-take",
+		"exec-on-event": true
+	},
+
+	"custom/trash": {
+		"exec": "~/.config/waybar/scripts/nso-widget trash",
+		"return-type": "json",
+		"interval": 30,
+		"format": "{}",
+		"min-length": 7,
+		"max-length": 9,
+		"on-click": "~/.config/waybar/scripts/nso-widget trash-open"
+	}
+}

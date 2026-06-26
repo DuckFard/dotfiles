@@ -1,0 +1,7 @@
+{
+  "layer": "top",
+  "position": "top",
+  "exclusive": true,
+  "height": 34,
+  "modules-center": ["clock"]
+}

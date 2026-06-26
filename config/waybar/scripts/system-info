@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+set -u
+
+json() {
+	local text="${1:-}"
+	local tooltip="${2:-}"
+	local class="${3:-}"
+	jq -cn --arg text "$text" --arg tooltip "$tooltip" --arg class "$class" \
+		'{text: $text, tooltip: $tooltip, class: $class}'
+}
+
+case "${1:-}" in
+	disk)
+		line="$(df -hP / | awk 'NR == 2 { print $3 " used / " $2 " total, " $4 " free" }')"
+		pct="$(df -P / | awk 'NR == 2 { print $5 }')"
+		used="${pct%\%}"
+		class="normal"
+		if [ "${used:-0}" -ge 90 ]; then
+			class="critical"
+		elif [ "${used:-0}" -ge 75 ]; then
+			class="warning"
+		fi
+		json " ${pct:-?}" "Root disk: ${line:-unknown}" "$class"
+		;;
+	kernel)
+		kernel="$(uname -r)"
+		base="${kernel%%-*}"
+		series="${base%.*}"
+		json " ${series:-$base}" "Kernel: ${kernel}" "normal"
+		;;
+	nixos)
+		version="$(nixos-version 2>/dev/null || true)"
+		major="${version%%.*}"
+		rest="${version#*.}"
+		minor="${rest%%.*}"
+		short="${major:-?}.${minor:-?}"
+		generation="$(readlink /nix/var/nix/profiles/system 2>/dev/null | sed -n 's/system-\([0-9][0-9]*\)-link/\1/p')"
+		text=" ${short:-?}"
+		[ -n "${generation:-}" ] && text="${text} #${generation}"
+		json "$text" "NixOS: ${version:-unknown}\nGeneration: ${generation:-unknown}" "normal"
+		;;
+	nix-config)
+		status="$(git -C /etc/nixos status --short 2>/dev/null || true)"
+		if [ -n "$status" ]; then
+			count="$(printf '%s\n' "$status" | wc -l | tr -d ' ')"
+			tooltip="$(printf 'Dirty /etc/nixos files:\n%s' "$status")"
+			json "󰜥 ${count}" "$tooltip" "warning"
+		else
+			json "󰄬" "/etc/nixos clean" "clean"
+		fi
+		;;
+	driftwm)
+		state="$(driftwm msg state 2>/dev/null || true)"
+		windows="$(printf '%s\n' "$state" | awk '/^windows / { print $2; exit }')"
+		camera="$(printf '%s\n' "$state" | awk '/^camera / { print $2 ", " $3; exit }')"
+		zoom="$(printf '%s\n' "$state" | awk '/^zoom / { print $2; exit }')"
+		json "󰖲 ${windows:-?}" "driftwm windows: ${windows:-unknown}\nCamera: ${camera:-unknown}\nZoom: ${zoom:-unknown}" "normal"
+		;;
+	*)
+		json "?" "Unknown system-info module: ${1:-none}" "warning"
+		;;
+esac

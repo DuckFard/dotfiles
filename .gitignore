@@ -1,0 +1,39 @@
+# Local state and private material
+.cache/
+.local/
+.mozilla/
+.var/
+.ssh/
+.gnupg/
+.pki/
+
+# Secrets and environment overrides
+.env
+.env.*
+*.secret
+secrets/
+private/
+*.key
+*.pem
+
+# Editor/session leftovers
+*~
+*.bak
+*.backup
+*.tmp
+*.log
+
+# Runtime state that should not be published
+config/mozilla/
+config/vesktop/
+config/pulse/
+config/dconf/
+config/session/
+config/systemd/user/*.wants/
+config/environment.d/10-home-manager.conf
+config/fontconfig/conf.d/10-hm-fonts.conf
+config/fontconfig/conf.d/52-hm-default-fonts.conf
+
+# Build outputs
+result
+result-*

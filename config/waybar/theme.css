@@ -1,0 +1,53 @@
+/* NEEDY STREAMER OVERLOAD-inspired palette */
+
+@define-color sugar          #fff1fa;
+@define-color sugar-dim      #ffd4ec;
+@define-color hot-pink       #ff5ca8;
+@define-color bubblegum      #ff8ac9;
+@define-color violet         #9c6cff;
+@define-color cyber-cyan     #64e7ff;
+@define-color mint           #7df2bf;
+@define-color lemon          #ffd95c;
+@define-color danger         #ff496f;
+@define-color ink            #15111f;
+@define-color ink-2          #20192d;
+@define-color ink-3          #2c213d;
+@define-color panel-blue     #17384d;
+@define-color panel-pink     #422139;
+@define-color panel-violet   #31204a;
+
+/*
+	br - border
+	bg - background
+	fg - foreground
+*/
+
+/* Main colors */
+
+@define-color accent         @hot-pink;
+@define-color main-br        @bubblegum;
+@define-color main-bg        @ink;
+@define-color main-fg        @sugar;
+@define-color hover-bg       @ink-3;
+@define-color hover-fg       @cyber-cyan;
+@define-color outline        shade(@main-bg, 0.5);
+
+/* Module colors */
+
+@define-color ame            @panel-pink;
+@define-color workspaces     @ink-2;
+@define-color temperature    @panel-violet;
+@define-color memory         @panel-blue;
+@define-color cpu            @panel-pink;
+@define-color time           @hot-pink;
+@define-color date           @panel-blue;
+@define-color tray           @ink-2;
+@define-color volume         @panel-violet;
+@define-color backlight      @panel-blue;
+@define-color battery        @panel-pink;
+
+/* State colors */
+
+@define-color warning        @lemon;
+@define-color critical       @danger;
+@define-color charging       @mint;

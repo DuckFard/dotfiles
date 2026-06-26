@@ -1,0 +1,12 @@
+{
+  "include": [
+    "~/.config/waybar/modules/*.jsonc",
+    "~/.config/waybar/modules/custom/*.jsonc"
+  ],
+
+  "layer": "top",
+  "position": "top",
+  "exclusive": true,
+  "height": 44,
+  "modules-center": ["clock"]
+}
