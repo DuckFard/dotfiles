@@ -22,6 +22,15 @@ Run:
 That runs the tracked-file privacy scan and `nix flake check --no-build` for the
 NixOS flake.
 
+On a rebuilt target machine, also run:
+
+```sh
+./scripts/check-runtime-deps
+```
+
+That checks the runtime commands used by the driftwm and Waybar helpers without
+requiring any private local paths.
+
 ## Weather Config
 
 `config/driftwm/nso.toml` intentionally keeps placeholder OpenWeatherMap values:

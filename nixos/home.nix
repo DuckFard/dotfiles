@@ -25,9 +25,9 @@ in
       ll = "eza -lah";
       cat = "bat";
       diag = "inxi -Fazy";
-      rebuild = "sudo nixos-rebuild switch --flake /etc/nixos";
-      nconf = "kate /etc/nixos/configuration.nix";
-      hconf = "kate /etc/nixos/home.nix";
+      rebuild = "sudo nixos-rebuild switch --flake \${NIXOS_FLAKE:-/etc/nixos}";
+      nconf = "\${EDITOR:-kate} \${NIXOS_FLAKE:-/etc/nixos}/configuration.nix";
+      hconf = "\${EDITOR:-kate} \${NIXOS_FLAKE:-/etc/nixos}/home.nix";
     };
   };
 
@@ -53,6 +53,8 @@ in
     tealdeer
     killall
     bluez
+    libnotify
+    pulseaudio # pactl for the Waybar volume helper
   ];
 
   home.pointerCursor = {
@@ -75,6 +77,7 @@ in
   ];
 
   home.sessionVariables = {
+    NIXOS_FLAKE = "/etc/nixos";
     XCURSOR_THEME = cursorTheme;
     XCURSOR_SIZE = toString cursorSize;
   };

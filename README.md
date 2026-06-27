@@ -70,6 +70,7 @@ Useful helpers:
 ```sh
 ./scripts/tree                # show tracked files in a compact tree-like view
 ./scripts/check-private-info  # scan tracked files for private-info patterns
+./scripts/check-runtime-deps  # verify runtime commands used by WM/bar helpers
 nix flake check --no-build ./nixos
 ```
 

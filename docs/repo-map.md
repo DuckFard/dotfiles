@@ -19,6 +19,7 @@ keeps reusable declarative config in Git and keeps generated state out.
 - `config/driftwm/nso.toml` - NSO widget override template.
 - `config/waybar/config.mechabar.full.jsonc` - main Waybar layout snapshot.
 - `scripts/check` - privacy scan plus Nix flake evaluation.
+- `scripts/check-runtime-deps` - target-machine runtime command check for driftwm and Waybar helpers.
 
 ## Generated Or Private State
 

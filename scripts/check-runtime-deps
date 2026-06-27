@@ -1,0 +1,55 @@
+#!/usr/bin/env sh
+set -eu
+
+required='
+bluetoothctl
+brightnessctl
+df
+driftwm
+fuzzel
+git
+jq
+kitty
+nmcli
+notify-send
+pactl
+waybar
+'
+
+optional='
+dolphin
+kate
+xdg-open
+'
+
+missing_required=''
+missing_optional=''
+
+check_list() {
+    list=$1
+    missing=''
+
+    for bin in $list; do
+        if ! command -v "$bin" >/dev/null 2>&1; then
+            missing="${missing}${bin}
+"
+        fi
+    done
+
+    printf '%s' "$missing"
+}
+
+missing_required=$(check_list "$required")
+missing_optional=$(check_list "$optional")
+
+if [ -n "$missing_required" ]; then
+    printf 'Missing required runtime commands:\n%s\n' "$missing_required" >&2
+    printf 'These are used by the driftwm/Waybar helpers. Rebuild the NixOS config or add replacements before enabling the full desktop.\n' >&2
+    exit 1
+fi
+
+if [ -n "$missing_optional" ]; then
+    printf 'Optional runtime commands not found:\n%s\n' "$missing_optional" >&2
+fi
+
+printf 'Required runtime commands are available.\n'
