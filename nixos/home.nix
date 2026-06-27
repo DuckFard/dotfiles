@@ -72,8 +72,8 @@ in
   };
 
   home.sessionPath = [
-    "$HOME/.codex/bin"
     "$HOME/.local/bin"
+    "$HOME/.codex/bin"
   ];
 
   home.sessionVariables = {

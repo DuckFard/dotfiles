@@ -28,7 +28,7 @@
 #                        the viewport center), then BFS to neighbors. Falls
 #                        back to "center" when no focused window or no valid
 #                        placement was found.
-# window_placement = "center"
+window_placement = "auto"
 
 # Commands to run at startup (after WAYLAND_DISPLAY is set).
 # Each entry is passed to sh -c, so full shell syntax works (pipes, &&, env vars).
@@ -637,7 +637,3 @@ position = [1088, -180]
 [[window_rules]]
 app_id = "dev.driftwm.nso.medications"
 position = [-1080, -488]
-
-[[window_rules]]
-app_id = "dev.driftwm.nso.trash_bin"
-position = [-720, -540]
