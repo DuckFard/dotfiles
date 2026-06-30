@@ -108,6 +108,7 @@ in
     vim
     wget
     curl
+    bubblewrap
 
     # Monitoring and search tools
     htop
